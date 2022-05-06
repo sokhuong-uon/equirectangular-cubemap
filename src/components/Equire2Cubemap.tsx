@@ -1,10 +1,18 @@
 import { OrbitControls } from '@react-three/drei'
-import { Canvas } from '@react-three/fiber'
-import { folder, useControls } from 'leva'
-import { Suspense, useMemo, useState } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
+import { buttonGroup, folder, useControls } from 'leva'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import { CamerasAndTargets } from './CamerasAndTargets'
 import { CanvasOutput } from './CanvasOutput'
-import { WebGLRenderTarget } from 'three'
+import {
+	Mesh,
+	MeshBasicMaterial,
+	PerspectiveCamera,
+	PlaneBufferGeometry,
+	Scene,
+	WebGLRenderer,
+	WebGLRenderTarget,
+} from 'three'
 import { EquirectangularList } from './EquirectangularList'
 
 const Equire2Cubemap = () => {
@@ -14,15 +22,9 @@ const Equire2Cubemap = () => {
 
 	const [images, setImages] = useState(['/pano/christmas_photo_studio_04.jpg'])
 
-	const { dimension, download } = useControls({
+	const [{ download }, set] = useControls(() => ({
 		output: folder(
 			{
-				dimension: {
-					value: 1024,
-					max: 2048,
-					min: 2,
-					label: 'dimension(px)',
-				},
 				download: {
 					value: false,
 				},
@@ -32,7 +34,24 @@ const Equire2Cubemap = () => {
 				color: 'orange',
 			},
 		),
-	})
+	}))
+	const [{ dimension }, setDimension] = useControls(() => ({
+		output: folder({
+			dimension: {
+				value: 1024,
+				label: 'dimension(px)',
+			},
+			dimensionButtonGroup: buttonGroup({
+				label: 'Presets',
+				opts: {
+					'256': (): void => setDimension({ dimension: 256 }),
+					'512': (): void => setDimension({ dimension: 512 }),
+					'1024': (): void => setDimension({ dimension: 1024 }),
+					'2048': (): void => setDimension({ dimension: 2048 }),
+				},
+			}),
+		}),
+	}))
 
 	const renderTargetList = useMemo(() => {
 		const PXtarget = new WebGLRenderTarget(dimension, dimension, {
@@ -94,7 +113,10 @@ const Equire2Cubemap = () => {
 					download ? 'visible' : 'invisible'
 				}`}
 			>
-				<CanvasOutput renderTargetList={renderTargetList}></CanvasOutput>
+				<CanvasOutput
+					// onDownload={() => onDownload}
+					renderTargetList={renderTargetList}
+				></CanvasOutput>
 			</div>
 		</div>
 	)
