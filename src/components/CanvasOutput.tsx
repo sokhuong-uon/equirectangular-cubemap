@@ -1,3 +1,4 @@
+import { useThree } from '@react-three/fiber'
 import { useRef } from 'react'
 
 type CanvasOutputProps = {
@@ -6,14 +7,6 @@ type CanvasOutputProps = {
 
 const CanvasOutput = ({ renderTargetList }: CanvasOutputProps) => {
 	const canvas = useRef<HTMLCanvasElement>(null!)
-
-	const download = () => {
-		// const context = canvas.current.getContext('bitmaprenderer')
-		const context = canvas.current.getContext('2d')
-		console.log(context)
-		context?.drawImage(renderTargetList[0].texture.source.data, 0, 0, 10, 10)
-		// context?.transferFromImageBitmap(renderTargetList[0].texture.source)
-	}
 
 	return (
 		<>
@@ -36,7 +29,6 @@ const CanvasOutput = ({ renderTargetList }: CanvasOutputProps) => {
 				<button
 					onClick={e => {
 						e.stopPropagation()
-						download()
 					}}
 					className="flex items-center justify-center w-16 h-10 text-teal-200 bg-teal-500 rounded-lg "
 				>

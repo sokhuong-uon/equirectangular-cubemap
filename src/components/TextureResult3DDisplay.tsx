@@ -26,16 +26,15 @@ const TextureResult3DDisplay = ({ renderTargetList }: TextureResult3DDisplayProp
 				color: 'blue',
 			},
 		),
-		displayMode: {
-			value: 1,
-			min: 0,
-			max: 1,
-			step: 1,
-			label: 'mode',
-			onChange: latest => {
-				setMode(latest)
+		output: folder({
+			displayMode: {
+				options: { CUBE: DISPLAY_MODE.CUBE, DEFAULT: DISPLAY_MODE.STANDARD },
+				label: 'mode',
+				onChange: latest => {
+					setMode(latest)
+				},
 			},
-		},
+		}),
 	})
 
 	const [mode, setMode] = useState(DISPLAY_MODE.CUBE)
@@ -90,6 +89,13 @@ const TextureResult3DDisplay = ({ renderTargetList }: TextureResult3DDisplayProp
 		target.texture.generateMipmaps = true
 	})
 
+	const onDownload = () => {
+		const img = new Image(1024, 1024)
+		const dataURL = gl.domElement.toDataURL()
+		img.src = dataURL
+		console.log(img)
+	}
+
 	return (
 		<>
 			{renderTargetList.map((target, index) => (
@@ -102,6 +108,7 @@ const TextureResult3DDisplay = ({ renderTargetList }: TextureResult3DDisplayProp
 					// @ts-ignore
 					rotation={springList[index].rotation}
 					scale={springList[index].scale}
+					onClick={onDownload}
 				>
 					<planeBufferGeometry />
 					<meshBasicMaterial side={FrontSide} map={target.texture}></meshBasicMaterial>

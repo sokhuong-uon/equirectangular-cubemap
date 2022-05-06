@@ -1,7 +1,7 @@
 import { useTexture } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Suspense, useMemo, useRef } from 'react'
-import { useControls } from 'leva'
+import { folder, useControls } from 'leva'
 import {
 	BackSide,
 	EquirectangularRefractionMapping,
@@ -38,10 +38,17 @@ const CamerasAndTargets = ({
 	const cameraList = [PXCamera, NXCamera, PYCamera, NYCamera, PZCamera, NZCamera]
 
 	const { cameraHelpers } = useControls({
-		cameraHelpers: {
-			value: false,
-			label: 'camera helpers',
-		},
+		helpers: folder(
+			{
+				cameraHelpers: {
+					value: false,
+					label: 'camera helpers',
+				},
+			},
+			{
+				collapsed: true,
+			},
+		),
 	})
 
 	const virtualScene = useMemo(() => new Scene(), [])
@@ -51,7 +58,7 @@ const CamerasAndTargets = ({
 		renderTargetList.forEach((target, index) => {
 			state.gl.setRenderTarget(target)
 			state.gl.render(virtualScene, cameraList[index].current)
-			state.gl.clear()
+			// state.gl.clear()
 		})
 		state.gl.setRenderTarget(null)
 	})
@@ -74,10 +81,12 @@ const CamerasAndTargets = ({
 
 const StatefulAxesHelper = () => {
 	const { axesHelpers } = useControls({
-		axesHelpers: {
-			value: false,
-			label: 'axes helper',
-		},
+		helpers: folder({
+			axesHelpers: {
+				value: false,
+				label: 'axes helper',
+			},
+		}),
 	})
 
 	return <axesHelper visible={axesHelpers}></axesHelper>

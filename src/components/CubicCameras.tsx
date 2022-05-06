@@ -1,6 +1,6 @@
 import { MutableRefObject, useEffect } from 'react'
 import { PerspectiveCamera } from '@react-three/drei'
-import { useControls } from 'leva'
+import { folder, useControls } from 'leva'
 import * as THREE from 'three'
 
 type CubicCamerasProps = {
@@ -27,12 +27,14 @@ const CubicCameras = ({ cameraList, helpers = false }: CubicCamerasProps) => {
 	}, [cameraList])
 
 	const { rotation } = useControls({
-		rotation: {
-			min: 0,
-			max: Math.PI,
-			label: 'angle',
-			value: 0,
-		},
+		output: folder({
+			rotation: {
+				min: 0,
+				max: Math.PI,
+				label: 'angle',
+				value: 0,
+			},
+		}),
 	})
 
 	return (
