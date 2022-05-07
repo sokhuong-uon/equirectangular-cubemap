@@ -1,18 +1,12 @@
 import { OrbitControls } from '@react-three/drei'
 import { Canvas, useThree } from '@react-three/fiber'
 import { buttonGroup, folder, useControls } from 'leva'
-import { Suspense, useEffect, useMemo, useState } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { CamerasAndTargets } from './CamerasAndTargets'
 import { CanvasOutput } from './CanvasOutput'
-import {
-	Mesh,
-	MeshBasicMaterial,
-	PerspectiveCamera,
-	PlaneBufferGeometry,
-	Scene,
-	WebGLRenderer,
-	WebGLRenderTarget,
-} from 'three'
+import { useCubeCamera } from './useCubeCamera'
+import { useCubeRenderTarget } from './useCubeRenderTarget'
+import { Scene, sRGBEncoding, WebGLRenderer } from 'three'
 import { EquirectangularList } from './EquirectangularList'
 
 const Equire2Cubemap = () => {
@@ -53,34 +47,22 @@ const Equire2Cubemap = () => {
 		}),
 	}))
 
-	const renderTargetList = useMemo(() => {
-		const PXtarget = new WebGLRenderTarget(dimension, dimension, {
-			stencilBuffer: false,
-		})
-		PXtarget.samples = 8
+	const renderTargetList = useCubeRenderTarget(dimension)
+	const cameraList = useCubeCamera()
 
-		const NXtarget = new WebGLRenderTarget(dimension, dimension, {
-			stencilBuffer: false,
-		})
-		NXtarget.samples = 8
-		const PYtarget = new WebGLRenderTarget(dimension, dimension, {
-			stencilBuffer: false,
-		})
-		PYtarget.samples = 8
-		const NYtarget = new WebGLRenderTarget(dimension, dimension, {
-			stencilBuffer: false,
-		})
-		NYtarget.samples = 8
-		const PZtarget = new WebGLRenderTarget(dimension, dimension, {
-			stencilBuffer: false,
-		})
-		PZtarget.samples = 8
-		const NZtarget = new WebGLRenderTarget(dimension, dimension, {
-			stencilBuffer: false,
-		})
-		NZtarget.samples = 8
-		// [px,nx, py,ny, pz,nz]
-		return [PXtarget, NXtarget, PYtarget, NYtarget, PZtarget, NZtarget]
+	const [virtualWebGLRenderer, virtualScene] = useMemo(() => {
+		const virtualWebGLRenderer = new WebGLRenderer({ antialias: true })
+		virtualWebGLRenderer.setSize(dimension, dimension)
+		virtualWebGLRenderer.setPixelRatio(1)
+		virtualWebGLRenderer.outputEncoding = sRGBEncoding
+
+		const virtualScene = new Scene()
+
+		return [virtualWebGLRenderer, virtualScene]
+	}, [])
+
+	useEffect(() => {
+		virtualWebGLRenderer.setSize(dimension, dimension)
 	}, [dimension])
 
 	const onFileInputChange = (event: any) => {
@@ -96,6 +78,8 @@ const Equire2Cubemap = () => {
 					<CamerasAndTargets
 						equirectangularImageURL={equirectangularImageURL}
 						renderTargetList={renderTargetList}
+						virtualScene={virtualScene}
+						cameraList={cameraList}
 					></CamerasAndTargets>
 				</Suspense>
 			</Canvas>
@@ -116,6 +100,9 @@ const Equire2Cubemap = () => {
 				<CanvasOutput
 					// onDownload={() => onDownload}
 					renderTargetList={renderTargetList}
+					virtualRenderer={virtualWebGLRenderer}
+					virtualScene={virtualScene}
+					cameraList={cameraList}
 				></CanvasOutput>
 			</div>
 		</div>

@@ -1,12 +1,30 @@
 import { useThree } from '@react-three/fiber'
-import { useRef } from 'react'
+import { MutableRefObject, useRef } from 'react'
+import { PerspectiveCamera } from 'three'
 
 type CanvasOutputProps = {
 	renderTargetList: THREE.WebGLRenderTarget[]
+	virtualScene: THREE.Scene
+	virtualRenderer: THREE.WebGLRenderer
+	cameraList: MutableRefObject<PerspectiveCamera>[]
 }
 
-const CanvasOutput = ({ renderTargetList }: CanvasOutputProps) => {
+const CanvasOutput = ({
+	renderTargetList,
+	virtualScene,
+	virtualRenderer,
+	cameraList,
+}: CanvasOutputProps) => {
 	const canvas = useRef<HTMLCanvasElement>(null!)
+	const image = useRef<HTMLImageElement>(null!)
+
+	const handleClick = () => {
+		console.log(cameraList[0].current.aspect)
+
+		virtualRenderer.render(virtualScene, cameraList[0].current)
+		const dataURL = virtualRenderer.domElement.toDataURL()
+		image.current.src = dataURL
+	}
 
 	return (
 		<>
@@ -27,9 +45,7 @@ const CanvasOutput = ({ renderTargetList }: CanvasOutputProps) => {
 				</button>
 				{/* download */}
 				<button
-					onClick={e => {
-						e.stopPropagation()
-					}}
+					onClick={handleClick}
 					className="flex items-center justify-center w-16 h-10 text-teal-200 bg-teal-500 rounded-lg "
 				>
 					<svg
@@ -62,8 +78,9 @@ const CanvasOutput = ({ renderTargetList }: CanvasOutputProps) => {
 				</button>
 			</div>
 			<div className="rounded-b-lg pointer-events-auto w-96 h-96 overflow-clip">
-				<div className="w-full h-full bg-black/60">
-					<canvas className="w-full h-full" ref={canvas} id="preview-canvas"></canvas>
+				<div className="w-full h-full bg-black">
+					{/* <canvas className="w-full h-full" ref={canvas} id="preview-canvas"></canvas> */}
+					<img ref={image} className="w-full h-full" alt="huh" />
 				</div>
 			</div>
 		</>
