@@ -1,9 +1,10 @@
 import { Text } from '@react-three/drei'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useThree } from '@react-three/fiber'
 import { folder, useControls } from 'leva'
-import { useEffect, useMemo, useState } from 'react'
-import { useSpring, a } from '@react-spring/three'
+import { useEffect, useState } from 'react'
+import { a } from '@react-spring/three'
 import { FrontSide } from 'three'
+import { useOutputPlaneSpringAnimation } from './useOutputPlaneSpringAnimation'
 
 type TextureResult3DDisplayProps = {
 	renderTargetList: THREE.WebGLRenderTarget[]
@@ -45,41 +46,7 @@ const TextureResult3DDisplay = ({ renderTargetList }: TextureResult3DDisplayProp
 		document.body.style.cursor = hover ? 'pointer' : 'auto'
 	}, [hover])
 
-	// x
-	const PXSpring = useSpring({
-		scale: mode === DISPLAY_MODE.CUBE ? 2 : 1,
-		position: mode === DISPLAY_MODE.CUBE ? [1, 0, 0] : [1, 0, 0],
-		rotation: mode === DISPLAY_MODE.CUBE ? [0, -Math.PI / 2, 0] : [0, 0, 0],
-	})
-	const NXSpring = useSpring({
-		scale: mode === DISPLAY_MODE.CUBE ? 2 : 1,
-		position: mode === DISPLAY_MODE.CUBE ? [-1, 0, 0] : [-1, 0, 0],
-		rotation: mode === DISPLAY_MODE.CUBE ? [0, Math.PI / 2, 0] : [0, 0, 0],
-	})
-	// y
-	const PYSpring = useSpring({
-		scale: mode === DISPLAY_MODE.CUBE ? 2 : 1,
-		position: mode === DISPLAY_MODE.CUBE ? [0, 1, 0] : [0, 1, 0],
-		rotation: mode === DISPLAY_MODE.CUBE ? [Math.PI / 2, 0, 0] : [0, 0, 0],
-	})
-	const NYSpring = useSpring({
-		scale: mode === DISPLAY_MODE.CUBE ? 2 : 1,
-		position: mode === DISPLAY_MODE.CUBE ? [0, -1, 0] : [0, -1, 0],
-		rotation: mode === DISPLAY_MODE.CUBE ? [-Math.PI / 2, 0, 0] : [0, 0, 0],
-	})
-	// z
-	const PZSpring = useSpring({
-		scale: mode === DISPLAY_MODE.CUBE ? 2 : 1,
-		position: mode === DISPLAY_MODE.CUBE ? [0, 0, 1] : [2, 0, 0],
-		rotation: mode === DISPLAY_MODE.CUBE ? [0, Math.PI, 0] : [0, 0, 0],
-	})
-	const NZSpring = useSpring({
-		scale: mode === DISPLAY_MODE.CUBE ? 2 : 1,
-		position: mode === DISPLAY_MODE.CUBE ? [0, 0, -1] : [0, 0, 0],
-		rotation: mode === DISPLAY_MODE.CUBE ? [0, 0, 0] : [0, 0, 0],
-	})
-
-	const springList = [PXSpring, NXSpring, PYSpring, NYSpring, PZSpring, NZSpring]
+	const springList = useOutputPlaneSpringAnimation(mode)
 	const labelList = ['+X', '-X', '+Y', '-Y', '+Z', '-Z']
 
 	const { gl } = useThree()
@@ -89,12 +56,7 @@ const TextureResult3DDisplay = ({ renderTargetList }: TextureResult3DDisplayProp
 		target.texture.generateMipmaps = true
 	})
 
-	const onDownload = () => {
-		const img = new Image(1024, 1024)
-		const dataURL = gl.domElement.toDataURL()
-		img.src = dataURL
-		console.log(img)
-	}
+	const onDownload = () => {}
 
 	return (
 		<>
@@ -107,6 +69,8 @@ const TextureResult3DDisplay = ({ renderTargetList }: TextureResult3DDisplayProp
 					// @ts-nocheck
 					// @ts-ignore
 					rotation={springList[index].rotation}
+					// @ts-nocheck
+					// @ts-ignore
 					scale={springList[index].scale}
 					onClick={onDownload}
 				>
