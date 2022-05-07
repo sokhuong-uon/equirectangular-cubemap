@@ -19,8 +19,6 @@ const CanvasOutput = ({
 	const image = useRef<HTMLImageElement>(null!)
 
 	const handleClick = () => {
-		console.log(cameraList[0].current.aspect)
-
 		virtualRenderer.render(virtualScene, cameraList[0].current)
 		const dataURL = virtualRenderer.domElement.toDataURL()
 		image.current.src = dataURL
