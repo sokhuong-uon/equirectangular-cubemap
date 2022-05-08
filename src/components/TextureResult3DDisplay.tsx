@@ -4,7 +4,7 @@ import { a } from '@react-spring/three'
 import { FrontSide } from 'three'
 import { useOutputPlaneSpringAnimation } from '../hooks/useOutputPlaneSpringAnimation'
 import { SizeLabel } from './SizeLabel'
-import { useOutputControls } from '../hooks/useOutputControls'
+import { useSettingControls } from '../hooks/useSettingControls'
 import { useLabelsControls } from '../hooks/useLabelsControls'
 
 type TextureResult3DDisplayProps = {
@@ -12,7 +12,7 @@ type TextureResult3DDisplayProps = {
 }
 
 const TextureResult3DDisplay = ({ renderTargetList }: TextureResult3DDisplayProps) => {
-	const { mode } = useOutputControls()
+	const { mode } = useSettingControls()
 
 	const springList = useOutputPlaneSpringAnimation(mode)
 	const [labels] = useState(['+X', '-X', '+Y', '-Y', '+Z', '-Z'])

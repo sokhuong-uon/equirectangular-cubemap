@@ -3,9 +3,9 @@ enum DISPLAY_MODE {
 	STANDARD,
 	CUBE,
 }
-export function useOutputControls(onRotationChange?: (v: number) => void) {
+export function useSettingControls(onRotationChange?: (v: number) => void) {
 	const [outputControls, set] = useControls(() => ({
-		output: folder(
+		setting: folder(
 			{
 				rotation: {
 					min: 0,
@@ -15,9 +15,6 @@ export function useOutputControls(onRotationChange?: (v: number) => void) {
 					onChange: latest => {
 						onRotationChange?.(latest)
 					},
-				},
-				download: {
-					value: false,
 				},
 
 				dimension: {

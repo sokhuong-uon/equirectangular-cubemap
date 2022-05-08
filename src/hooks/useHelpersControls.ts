@@ -8,10 +8,6 @@ export function useHelpersControls() {
 					value: false,
 					label: 'axes',
 				},
-				cameraHelpers: {
-					value: false,
-					label: 'camera',
-				},
 			},
 			{
 				collapsed: true,

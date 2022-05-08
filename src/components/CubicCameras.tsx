@@ -1,28 +1,20 @@
-import { MutableRefObject, startTransition, useEffect, useMemo, useState } from 'react'
+import { MutableRefObject, useEffect, useRef, useState } from 'react'
 import { PerspectiveCamera } from '@react-three/drei'
-import { SizeLabel } from './SizeLabel'
-import { useLabelsControls } from '../hooks/useLabelsControls'
-import { useHelpersControls } from '../hooks/useHelpersControls'
-import { useOutputControls } from '../hooks/useOutputControls'
+import { useSettingControls } from '../hooks/useSettingControls'
 
 type CubicCamerasProps = {
 	cameraList: MutableRefObject<THREE.PerspectiveCamera>[]
 }
 const CubicCameras = ({ cameraList }: CubicCamerasProps) => {
-	const [labels] = useState(['+X', '-X', '+Y', '-Y', '+Z', '-Z'])
-	const [rotation, setRotation] = useState(0)
-	const { cameraHelpers } = useHelpersControls()
-	const { show, color } = useLabelsControls()
+	const group = useRef<THREE.Group>(null!)
 
-	const rotationTransition = useMemo(() => {
+	const [rotationTransition] = useState(() => {
 		const rotationChangeHandler = (v: number) => {
-			startTransition(() => {
-				setRotation(v)
-			})
+			group.current.rotation.y = v
 		}
 		return rotationChangeHandler
-	}, [])
-	useOutputControls(rotationTransition)
+	})
+	useSettingControls(rotationTransition)
 
 	useEffect(() => {
 		cameraList.forEach(camera => {
@@ -43,7 +35,7 @@ const CubicCameras = ({ cameraList }: CubicCamerasProps) => {
 	}, [])
 
 	return (
-		<group rotation-y={rotation}>
+		<group ref={group}>
 			{cameraList.map((_, index) => (
 				<PerspectiveCamera
 					key={index}
@@ -51,18 +43,6 @@ const CubicCameras = ({ cameraList }: CubicCamerasProps) => {
 					args={[90, 1, 0.1, 5]}
 				></PerspectiveCamera>
 			))}
-			{cameraHelpers &&
-				cameraList.map((camera, index) => (
-					<cameraHelper key={index} args={[camera.current]}>
-						<SizeLabel
-							scale={4}
-							visible={show}
-							color={color}
-							label={labels[index]}
-							localPosition={[0, 0, -5]}
-						></SizeLabel>
-					</cameraHelper>
-				))}
 		</group>
 	)
 }
