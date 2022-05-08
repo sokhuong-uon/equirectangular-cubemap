@@ -1,3 +1,4 @@
+import { invalidate } from '@react-three/fiber'
 import { buttonGroup, folder, useControls } from 'leva'
 enum DISPLAY_MODE {
 	STANDARD,
@@ -14,6 +15,7 @@ export function useSettingControls(onRotationChange?: (v: number) => void) {
 					value: 0,
 					onChange: latest => {
 						onRotationChange?.(latest)
+						invalidate()
 					},
 				},
 

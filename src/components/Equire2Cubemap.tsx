@@ -55,7 +55,7 @@ const Equire2Cubemap = () => {
 
 	return (
 		<div className="relative flex w-full h-full">
-			<Canvas>
+			<Canvas frameloop="demand">
 				<OrbitControls></OrbitControls>
 				<Suspense>
 					<CamerasAndTargets
