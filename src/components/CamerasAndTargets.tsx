@@ -1,25 +1,23 @@
 import { useTexture } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Suspense, useMemo, useRef } from 'react'
-import { folder, useControls } from 'leva'
-import {
-	BackSide,
-	EquirectangularRefractionMapping,
-	PerspectiveCamera,
-	Scene,
-	sRGBEncoding,
-} from 'three'
+import { MutableRefObject, Suspense } from 'react'
+import { StatefulAxesHelper } from './StatefulAxesHelper'
+import { BackSide, EquirectangularRefractionMapping, PerspectiveCamera, sRGBEncoding } from 'three'
 import { CubicCameras } from './CubicCameras'
 import { TextureResult3DDisplay } from './TextureResult3DDisplay'
 
 type CamerasAndTargetsProps = {
 	equirectangularImageURL: string
 	renderTargetList: THREE.WebGLRenderTarget[]
+	virtualScene: THREE.Scene
+	cameraList: MutableRefObject<PerspectiveCamera>[]
 }
 
 const CamerasAndTargets = ({
 	equirectangularImageURL,
 	renderTargetList,
+	virtualScene,
+	cameraList,
 }: CamerasAndTargetsProps) => {
 	const { gl } = useThree()
 
@@ -29,36 +27,14 @@ const CamerasAndTargets = ({
 	equirectangularTexture.anisotropy = gl.capabilities.getMaxAnisotropy()
 	equirectangularTexture.generateMipmaps = true
 
-	const PXCamera = useRef<PerspectiveCamera>(null!)
-	const NXCamera = useRef<PerspectiveCamera>(null!)
-	const PYCamera = useRef<PerspectiveCamera>(null!)
-	const NYCamera = useRef<PerspectiveCamera>(null!)
-	const PZCamera = useRef<PerspectiveCamera>(null!)
-	const NZCamera = useRef<PerspectiveCamera>(null!)
-	const cameraList = [PXCamera, NXCamera, PYCamera, NYCamera, PZCamera, NZCamera]
-
-	const { cameraHelpers } = useControls({
-		helpers: folder(
-			{
-				cameraHelpers: {
-					value: false,
-					label: 'camera helpers',
-				},
-			},
-			{
-				collapsed: true,
-			},
-		),
-	})
-
-	const virtualScene = useMemo(() => new Scene(), [])
 	virtualScene.background = equirectangularTexture
 
 	useFrame(state => {
+		state.gl.setRenderTarget(renderTargetList[0])
 		renderTargetList.forEach((target, index) => {
 			state.gl.setRenderTarget(target)
+
 			state.gl.render(virtualScene, cameraList[index].current)
-			// state.gl.clear()
 		})
 		state.gl.setRenderTarget(null)
 	})
@@ -71,25 +47,12 @@ const CamerasAndTargets = ({
 				<meshBasicMaterial side={BackSide} map={equirectangularTexture}></meshBasicMaterial>
 			</mesh>
 
-			<CubicCameras cameraList={cameraList} helpers={cameraHelpers}></CubicCameras>
+			<CubicCameras cameraList={cameraList}></CubicCameras>
 			<Suspense>
 				<TextureResult3DDisplay renderTargetList={renderTargetList}></TextureResult3DDisplay>
 			</Suspense>
 		</>
 	)
-}
-
-const StatefulAxesHelper = () => {
-	const { axesHelpers } = useControls({
-		helpers: folder({
-			axesHelpers: {
-				value: false,
-				label: 'axes helper',
-			},
-		}),
-	})
-
-	return <axesHelper visible={axesHelpers}></axesHelper>
 }
 
 export { CamerasAndTargets }
