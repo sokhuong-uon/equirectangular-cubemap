@@ -1,16 +1,8 @@
 import { useTexture } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
-import { MutableRefObject, Suspense, useEffect, useMemo, useRef } from 'react'
-import { folder, useControls } from 'leva'
+import { MutableRefObject, Suspense } from 'react'
 import { StatefulAxesHelper } from './StatefulAxesHelper'
-import {
-	BackSide,
-	EquirectangularRefractionMapping,
-	PerspectiveCamera,
-	Scene,
-	sRGBEncoding,
-	Texture,
-} from 'three'
+import { BackSide, EquirectangularRefractionMapping, PerspectiveCamera, sRGBEncoding } from 'three'
 import { CubicCameras } from './CubicCameras'
 import { TextureResult3DDisplay } from './TextureResult3DDisplay'
 

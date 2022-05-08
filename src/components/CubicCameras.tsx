@@ -1,12 +1,21 @@
-import { MutableRefObject, useEffect } from 'react'
+import { MutableRefObject, useEffect, useRef, useState } from 'react'
 import { PerspectiveCamera } from '@react-three/drei'
-import { folder, useControls } from 'leva'
-import * as THREE from 'three'
+import { useSettingControls } from '../hooks/useSettingControls'
 
 type CubicCamerasProps = {
 	cameraList: MutableRefObject<THREE.PerspectiveCamera>[]
 }
 const CubicCameras = ({ cameraList }: CubicCamerasProps) => {
+	const group = useRef<THREE.Group>(null!)
+
+	const [rotationTransition] = useState(() => {
+		const rotationChangeHandler = (v: number) => {
+			group.current.rotation.y = v
+		}
+		return rotationChangeHandler
+	})
+	useSettingControls(rotationTransition)
+
 	useEffect(() => {
 		cameraList.forEach(camera => {
 			camera.current.aspect = 1
@@ -25,42 +34,15 @@ const CubicCameras = ({ cameraList }: CubicCamerasProps) => {
 		cameraList[5].current.lookAt(0, 0, -1) // nz
 	}, [])
 
-	const { rotation } = useControls({
-		output: folder({
-			rotation: {
-				min: 0,
-				max: Math.PI,
-				label: 'angle',
-				value: 0,
-			},
-		}),
-	})
-
-	const { cameraHelpers } = useControls({
-		helpers: folder(
-			{
-				cameraHelpers: {
-					value: false,
-					label: 'camera helpers',
-				},
-			},
-			{
-				collapsed: true,
-			},
-		),
-	})
-
 	return (
-		<group rotation-y={rotation}>
+		<group ref={group}>
 			{cameraList.map((_, index) => (
 				<PerspectiveCamera
 					key={index}
 					ref={cameraList[index]}
-					args={[90, 1, 0.1, 100]}
+					args={[90, 1, 0.1, 5]}
 				></PerspectiveCamera>
 			))}
-			{cameraHelpers &&
-				cameraList.map((camera, index) => <cameraHelper key={index} args={[camera.current]} />)}
 		</group>
 	)
 }
