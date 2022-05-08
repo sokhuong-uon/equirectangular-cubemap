@@ -1,14 +1,6 @@
-import { folder, useControls } from 'leva'
+import { useHelpersControls } from '../hooks/useHelpersControls'
 
 export function StatefulAxesHelper() {
-	const { axesHelpers } = useControls({
-		helpers: folder({
-			axesHelpers: {
-				value: false,
-				label: 'axes helper',
-			},
-		}),
-	})
-
+	const { axesHelpers } = useHelpersControls()
 	return <axesHelper visible={axesHelpers}></axesHelper>
 }

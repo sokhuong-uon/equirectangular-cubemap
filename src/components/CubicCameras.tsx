@@ -1,12 +1,29 @@
-import { MutableRefObject, useEffect } from 'react'
+import { MutableRefObject, startTransition, useEffect, useMemo, useState } from 'react'
 import { PerspectiveCamera } from '@react-three/drei'
-import { folder, useControls } from 'leva'
-import * as THREE from 'three'
+import { SizeLabel } from './SizeLabel'
+import { useLabelsControls } from '../hooks/useLabelsControls'
+import { useHelpersControls } from '../hooks/useHelpersControls'
+import { useOutputControls } from '../hooks/useOutputControls'
 
 type CubicCamerasProps = {
 	cameraList: MutableRefObject<THREE.PerspectiveCamera>[]
 }
 const CubicCameras = ({ cameraList }: CubicCamerasProps) => {
+	const [labels] = useState(['+X', '-X', '+Y', '-Y', '+Z', '-Z'])
+	const [rotation, setRotation] = useState(0)
+	const { cameraHelpers } = useHelpersControls()
+	const { show, color } = useLabelsControls()
+
+	const rotationTransition = useMemo(() => {
+		const rotationChangeHandler = (v: number) => {
+			startTransition(() => {
+				setRotation(v)
+			})
+		}
+		return rotationChangeHandler
+	}, [])
+	useOutputControls(rotationTransition)
+
 	useEffect(() => {
 		cameraList.forEach(camera => {
 			camera.current.aspect = 1
@@ -25,42 +42,27 @@ const CubicCameras = ({ cameraList }: CubicCamerasProps) => {
 		cameraList[5].current.lookAt(0, 0, -1) // nz
 	}, [])
 
-	const { rotation } = useControls({
-		output: folder({
-			rotation: {
-				min: 0,
-				max: Math.PI,
-				label: 'angle',
-				value: 0,
-			},
-		}),
-	})
-
-	const { cameraHelpers } = useControls({
-		helpers: folder(
-			{
-				cameraHelpers: {
-					value: false,
-					label: 'camera helpers',
-				},
-			},
-			{
-				collapsed: true,
-			},
-		),
-	})
-
 	return (
 		<group rotation-y={rotation}>
 			{cameraList.map((_, index) => (
 				<PerspectiveCamera
 					key={index}
 					ref={cameraList[index]}
-					args={[90, 1, 0.1, 100]}
+					args={[90, 1, 0.1, 5]}
 				></PerspectiveCamera>
 			))}
 			{cameraHelpers &&
-				cameraList.map((camera, index) => <cameraHelper key={index} args={[camera.current]} />)}
+				cameraList.map((camera, index) => (
+					<cameraHelper key={index} args={[camera.current]}>
+						<SizeLabel
+							scale={4}
+							visible={show}
+							color={color}
+							label={labels[index]}
+							localPosition={[0, 0, -5]}
+						></SizeLabel>
+					</cameraHelper>
+				))}
 		</group>
 	)
 }

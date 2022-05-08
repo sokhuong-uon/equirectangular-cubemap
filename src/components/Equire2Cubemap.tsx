@@ -1,13 +1,13 @@
 import { OrbitControls } from '@react-three/drei'
-import { Canvas, useThree } from '@react-three/fiber'
-import { buttonGroup, folder, useControls } from 'leva'
+import { Canvas } from '@react-three/fiber'
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { CamerasAndTargets } from './CamerasAndTargets'
 import { CanvasOutput } from './CanvasOutput'
-import { useCubeCamera } from './useCubeCamera'
-import { useCubeRenderTarget } from './useCubeRenderTarget'
+import { useCubeCamera } from '../hooks/useCubeCamera'
+import { useCubeRenderTarget } from '../hooks/useCubeRenderTarget'
 import { Scene, sRGBEncoding, WebGLRenderer } from 'three'
 import { EquirectangularList } from './EquirectangularList'
+import { useOutputControls } from '../hooks/useOutputControls'
 
 const Equire2Cubemap = () => {
 	const [equirectangularImageURL, setEquirectangularImageURL] = useState(
@@ -16,36 +16,7 @@ const Equire2Cubemap = () => {
 
 	const [images, setImages] = useState(['/pano/christmas_photo_studio_04.jpg'])
 
-	const [{ download }, set] = useControls(() => ({
-		output: folder(
-			{
-				download: {
-					value: false,
-				},
-			},
-			{
-				collapsed: true,
-				color: 'orange',
-			},
-		),
-	}))
-	const [{ dimension }, setDimension] = useControls(() => ({
-		output: folder({
-			dimension: {
-				value: 1024,
-				label: 'dimension(px)',
-			},
-			dimensionButtonGroup: buttonGroup({
-				label: 'Presets',
-				opts: {
-					'256': (): void => setDimension({ dimension: 256 }),
-					'512': (): void => setDimension({ dimension: 512 }),
-					'1024': (): void => setDimension({ dimension: 1024 }),
-					'2048': (): void => setDimension({ dimension: 2048 }),
-				},
-			}),
-		}),
-	}))
+	const { dimension, download } = useOutputControls()
 
 	const renderTargetList = useCubeRenderTarget(dimension)
 	const cameraList = useCubeCamera()
