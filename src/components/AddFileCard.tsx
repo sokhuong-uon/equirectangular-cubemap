@@ -44,14 +44,6 @@ const AddFileCard = ({ onChange, onDrop }: AddFileCardProps) => {
 					dragging ? 'border-4 border-yellow-300 border-dashed' : ''
 				}`}
 			>
-				{/* <StandardSinglePathSVG
-					className="scale-150 pointer-events-none"
-					d="M13 13V19H11V13H5V11H11V5H13V11H19V13H13Z"
-				/>
-				<StandardSinglePathSVG
-					className="scale-150 pointer-events-none"
-					d="M13 13V19H11V13H5V11H11V5H13V11H19V13H13Z"
-				/> */}
 				<div className="flex flex-col items-center justify-center w-full h-full gap-1 pointer-events-none">
 					<svg
 						width="24"
