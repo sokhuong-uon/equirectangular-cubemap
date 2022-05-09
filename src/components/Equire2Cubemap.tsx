@@ -63,6 +63,23 @@ const Equire2Cubemap = () => {
 	const onDeleteItem = (index: number) => {
 		setImages(prev => prev.filter((v, i) => i != index && v))
 	}
+	const onDropItem = (event: DragEvent) => {
+		const files = event.dataTransfer?.files
+		if (files) {
+			if (files.length) {
+				for (let i = 0; i < files.length; i++) {
+					if (
+						files[i].type === 'image/png' ||
+						files[i].type === 'image/jpg' ||
+						files[i].type === 'image/jpeg'
+					) {
+						const url = URL.createObjectURL(files[i])
+						setImages(prev => [...prev, url])
+					}
+				}
+			}
+		}
+	}
 
 	return (
 		<div className="relative flex w-full h-full">
@@ -85,6 +102,7 @@ const Equire2Cubemap = () => {
 					}}
 					onFileInputChange={onFileInputChange}
 					onDeleteItem={onDeleteItem}
+					onDrop={onDropItem}
 				></EquirectangularList>
 			</Suspense>
 			<a
