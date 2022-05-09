@@ -7,6 +7,7 @@ type EquirectangularListProps = {
 	onItemClick: (url: string) => void
 	onFileInputChange: (event: any) => void
 	onDeleteItem: (index: number) => void
+	onDrop: (event: DragEvent) => void
 }
 
 const EquirectangularList = ({
@@ -14,6 +15,7 @@ const EquirectangularList = ({
 	onItemClick,
 	onFileInputChange,
 	onDeleteItem,
+	onDrop,
 }: EquirectangularListProps) => {
 	const { showPanoList } = useControls({
 		showPanoList: {
@@ -44,7 +46,7 @@ const EquirectangularList = ({
 					))}
 
 					{/* input field */}
-					<AddFileCard onChange={onFileInputChange} />
+					<AddFileCard onChange={onFileInputChange} onDrop={onDrop} />
 				</div>
 			</div>
 		</div>
