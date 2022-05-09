@@ -1,4 +1,4 @@
-import { useControls } from 'leva'
+import { folder, useControls } from 'leva'
 import { EquirectangularCard } from './EquirectangularCard'
 import { AddFileCard } from './AddFileCard'
 
@@ -18,10 +18,12 @@ const EquirectangularList = ({
 	onDrop,
 }: EquirectangularListProps) => {
 	const { showPanoList } = useControls({
-		showPanoList: {
-			value: false,
-			label: 'pano list',
-		},
+		upload: folder({
+			showPanoList: {
+				value: false,
+				label: 'pano list',
+			},
+		}),
 	})
 
 	return (
