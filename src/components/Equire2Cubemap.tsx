@@ -48,9 +48,20 @@ const Equire2Cubemap = () => {
 		virtualWebGLRenderer.setSize(dimension, dimension)
 	}, [dimension])
 
-	const onFileInputChange = (event: any) => {
-		const url = URL.createObjectURL(event.target.files[0])
-		setImages(prev => [...prev, url])
+	const onFileInputChange = (event: Event) => {
+		const input = event.target as HTMLInputElement
+		if (input.files) {
+			if (input.files.length) {
+				for (let i = 0; i < input.files.length; i++) {
+					const url = URL.createObjectURL(input.files[i])
+					setImages(prev => [...prev, url])
+				}
+			}
+		}
+	}
+
+	const onDeleteItem = (index: number) => {
+		setImages(prev => prev.filter((v, i) => i != index && v))
 	}
 
 	return (
@@ -73,6 +84,7 @@ const Equire2Cubemap = () => {
 						setEquirectangularImageURL(url)
 					}}
 					onFileInputChange={onFileInputChange}
+					onDeleteItem={onDeleteItem}
 				></EquirectangularList>
 			</Suspense>
 			<a
