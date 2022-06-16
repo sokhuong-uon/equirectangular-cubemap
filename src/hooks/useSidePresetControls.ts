@@ -11,11 +11,9 @@ export function useSidePresetControls(onChange: (side: number, format: DownloadF
 					opts: {
 						// png: (): void => {
 						// 	set({ format: 'png' })
-						// 	console.log(sidePresetControl.format)
 						// },
 						jpg: (): void => {
 							set({ format: 'jpg' })
-							console.log(sidePresetControl.format)
 						},
 					},
 				}),

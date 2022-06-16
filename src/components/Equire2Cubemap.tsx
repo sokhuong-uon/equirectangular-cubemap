@@ -9,14 +9,13 @@ import { EquirectangularList } from './EquirectangularList'
 import { useSettingControls } from '../hooks/useSettingControls'
 import { useSidePresetControls, DownloadFormat } from '../hooks/useSidePresetControls'
 import { StandardSinglePathSVG } from './StandardSinglePathSVG'
-import { useDownloadFormat } from '../hooks/useDownloadFormat'
 
 const Equire2Cubemap = () => {
 	const [equirectangularImageURL, setEquirectangularImageURL] = useState(
-		'/pano/christmas_photo_studio_04.jpg',
+		'/pano/christmas_photo_studio_04.webp',
 	)
 
-	const [images, setImages] = useState(['/pano/christmas_photo_studio_04.jpg'])
+	const [images, setImages] = useState(['/pano/christmas_photo_studio_04.webp'])
 
 	const { dimension } = useSettingControls()
 
@@ -38,7 +37,6 @@ const Equire2Cubemap = () => {
 
 	const download = (side: number, format: DownloadFormat) => {
 		virtualWebGLRenderer.render(virtualScene, cameraList[side].current)
-		console.log(format)
 
 		const dataURL = virtualWebGLRenderer.domElement.toDataURL(`image/${format}`)
 		const link = document.createElement('a')

@@ -20,10 +20,7 @@ const AddFileCard = ({ onChange, onDrop }: AddFileCardProps) => {
 					e.preventDefault()
 					setDragging(false)
 					e.dataTransfer.effectAllowed = 'copy'
-					console.log(e.dataTransfer.types)
-					console.log(e.dataTransfer.items[0])
 					if (e.dataTransfer.files.length) {
-						console.log('those are files')
 						// @ts-nocheck
 						// @ts-ignore
 						onDrop(e)
