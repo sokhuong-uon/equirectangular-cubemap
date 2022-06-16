@@ -1,28 +1,43 @@
 import { buttonGroup, folder, useControls } from 'leva'
-
-export function useSidePresetControls(onChange: (v: number) => void) {
-	return useControls({
+export type DownloadFormat = 'jpg' | 'png'
+export function useSidePresetControls(onChange: (side: number, format: DownloadFormat) => void) {
+	const [sidePresetControl, set] = useControls(() => ({
 		download: folder(
 			{
+				format: {
+					value: 'jpg',
+				},
+				options: buttonGroup({
+					opts: {
+						// png: (): void => {
+						// 	set({ format: 'png' })
+						// 	console.log(sidePresetControl.format)
+						// },
+						jpg: (): void => {
+							set({ format: 'jpg' })
+							console.log(sidePresetControl.format)
+						},
+					},
+				}),
 				sides: buttonGroup({
 					opts: {
 						px: (): void => {
-							onChange(0)
+							onChange(0, sidePresetControl.format as DownloadFormat)
 						},
 						nx: (): void => {
-							onChange(1)
+							onChange(1, sidePresetControl.format as DownloadFormat)
 						},
 						py: (): void => {
-							onChange(2)
+							onChange(2, sidePresetControl.format as DownloadFormat)
 						},
 						ny: (): void => {
-							onChange(3)
+							onChange(3, sidePresetControl.format as DownloadFormat)
 						},
 						pz: (): void => {
-							onChange(4)
+							onChange(4, sidePresetControl.format as DownloadFormat)
 						},
 						nz: (): void => {
-							onChange(5)
+							onChange(5, sidePresetControl.format as DownloadFormat)
 						},
 					},
 				}),
@@ -31,5 +46,6 @@ export function useSidePresetControls(onChange: (v: number) => void) {
 				collapsed: true,
 			},
 		),
-	})
+	}))
+	return sidePresetControl
 }

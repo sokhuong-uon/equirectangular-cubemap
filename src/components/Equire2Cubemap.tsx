@@ -7,8 +7,9 @@ import { useCubeRenderTarget } from '../hooks/useCubeRenderTarget'
 import { Scene, sRGBEncoding, WebGLRenderer } from 'three'
 import { EquirectangularList } from './EquirectangularList'
 import { useSettingControls } from '../hooks/useSettingControls'
-import { useSidePresetControls } from '../hooks/useSidePresetControls'
+import { useSidePresetControls, DownloadFormat } from '../hooks/useSidePresetControls'
 import { StandardSinglePathSVG } from './StandardSinglePathSVG'
+import { useDownloadFormat } from '../hooks/useDownloadFormat'
 
 const Equire2Cubemap = () => {
 	const [equirectangularImageURL, setEquirectangularImageURL] = useState(
@@ -35,14 +36,18 @@ const Equire2Cubemap = () => {
 
 	const [sideMap] = useState(['px', 'nx', 'py', 'ny', 'pz', 'nz'])
 
-	useSidePresetControls((index: number) => {
-		virtualWebGLRenderer.render(virtualScene, cameraList[index].current)
-		const dataURL = virtualWebGLRenderer.domElement.toDataURL('image/png')
+	const download = (side: number, format: DownloadFormat) => {
+		virtualWebGLRenderer.render(virtualScene, cameraList[side].current)
+		console.log(format)
+
+		const dataURL = virtualWebGLRenderer.domElement.toDataURL(`image/${format}`)
 		const link = document.createElement('a')
-		link.download = `${sideMap[index]}.png`
+		link.download = `${sideMap[side]}.${format}`
 		link.href = dataURL
 		link.click()
-	})
+	}
+
+	useSidePresetControls(download)
 
 	useEffect(() => {
 		virtualWebGLRenderer.setSize(dimension, dimension)
