@@ -9,9 +9,9 @@ export function useSidePresetControls(onChange: (side: number, format: DownloadF
 				},
 				options: buttonGroup({
 					opts: {
-						// png: (): void => {
-						// 	set({ format: 'png' })
-						// },
+						png: (): void => {
+							set({ format: 'png' })
+						},
 						jpg: (): void => {
 							set({ format: 'jpg' })
 						},

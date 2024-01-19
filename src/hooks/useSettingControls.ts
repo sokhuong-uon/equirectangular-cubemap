@@ -30,6 +30,7 @@ export function useSettingControls(onRotationChange?: (v: number) => void) {
 						'512': (): void => set({ dimension: 512 }),
 						'1024': (): void => set({ dimension: 1024 }),
 						'2048': (): void => set({ dimension: 2048 }),
+						'4096': (): void => set({ dimension: 4096 }),
 					},
 				}),
 
