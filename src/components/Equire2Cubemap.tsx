@@ -75,7 +75,9 @@ const Equire2Cubemap = () => {
 						files[i].type === 'image/png' ||
 						files[i].type === 'image/jpg' ||
 						files[i].type === 'image/webp' ||
-						files[i].type === 'image/jpeg'
+						files[i].type === 'image/jpeg' ||
+						files[i].type === 'image/vnd.radiance' || // HDR
+						files[i].type === 'image/aces' // EXR
 					) {
 						const url = URL.createObjectURL(files[i])
 						setImages(prev => [...prev, url])
