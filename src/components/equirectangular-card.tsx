@@ -17,11 +17,13 @@ const EquirectangularCard = ({ url, index, onClick, onDelete }: EquirectangularC
 			onClick={() => onClick(url)}
 			onPointerEnter={() => setHover(true)}
 			onPointerLeave={() => setHover(false)}
+			data-testid="equirectangular-card"
 		>
 			<img
 				src={url}
 				alt="pano"
 				className={`${hover && mayDelete ? 'opacity-40' : hover ? 'opacity-75' : 'opacity-100'}`}
+				data-testid="equirectangular-card-image"
 			/>
 			<div
 				onPointerEnter={() => setMayDelete(true)}
@@ -33,6 +35,7 @@ const EquirectangularCard = ({ url, index, onClick, onDelete }: EquirectangularC
 				className={`absolute top-0 right-0 w-8 h-8 flex items-center transition-transform justify-center rounded-bl-lg ${
 					hover && mayDelete ? 'scale-150' : hover ? 'scale-100' : 'scale-0'
 				}`}
+				data-testid="equirectangular-card-x-button"
 			>
 				<StandardSinglePathSVG
 					className="text-yellow-300 scale-150 rotate-45"

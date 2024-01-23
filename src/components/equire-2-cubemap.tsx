@@ -1,10 +1,10 @@
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import { CamerasAndTargets } from './cameras-and-targets'
 import { useCubeCamera } from '../hooks/use-cube-camera'
 import { useCubeRenderTarget } from '../hooks/use-cube-render-target'
-import { Scene, sRGBEncoding, WebGLRenderer } from 'three'
+import { Scene, SRGBColorSpace, WebGLRenderer } from 'three'
 import { EquirectangularList } from './equirectangular-list'
 import { useSettingControls } from '../hooks/use-setting-controls'
 import { useSidePresetControls, DownloadFormat } from '../hooks/use-side-preset-controls'
@@ -26,7 +26,7 @@ const Equire2Cubemap = () => {
 		const virtualWebGLRenderer = new WebGLRenderer({ antialias: true })
 		virtualWebGLRenderer.setSize(dimension, dimension)
 		virtualWebGLRenderer.setPixelRatio(1)
-		virtualWebGLRenderer.outputEncoding = sRGBEncoding
+		virtualWebGLRenderer.outputColorSpace = SRGBColorSpace
 
 		const virtualScene = new Scene()
 

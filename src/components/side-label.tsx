@@ -2,18 +2,18 @@ import { Text } from '@react-three/drei'
 import { MeshProps, Vector3 } from '@react-three/fiber'
 import { ColorRepresentation } from 'three'
 
-type SizeLabelProps = {
+type SideLabelProps = {
 	label: string
 	localPosition?: Vector3
 	color: ColorRepresentation
 }
 
-export function SizeLabel({
+export function SideLabel({
 	label,
 	localPosition = 0,
 	color,
 	...props
-}: MeshProps & SizeLabelProps) {
+}: MeshProps & SideLabelProps) {
 	return (
 		<Text color={color} position={localPosition} {...props}>
 			{label}
