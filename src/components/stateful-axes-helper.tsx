@@ -1,4 +1,4 @@
-import { useHelpersControls } from '../hooks/useHelpersControls'
+import { useHelpersControls } from '../hooks/use-helpers-controls'
 
 export function StatefulAxesHelper() {
 	const { axesHelpers } = useHelpersControls()

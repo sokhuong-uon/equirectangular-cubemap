@@ -1,4 +1,4 @@
-import { Equire2Cubemap } from './components/Equire2Cubemap'
+import { Equire2Cubemap } from './components/equire-2-cubemap'
 
 function App() {
 	return (

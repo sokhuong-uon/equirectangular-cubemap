@@ -1,6 +1,6 @@
 import { folder, useControls } from 'leva'
-import { EquirectangularCard } from './EquirectangularCard'
-import { AddFileCard } from './AddFileCard'
+import { EquirectangularCard } from './equirectangular-card'
+import { AddFileCard } from './add-file-card'
 
 type EquirectangularListProps = {
 	images: string[]

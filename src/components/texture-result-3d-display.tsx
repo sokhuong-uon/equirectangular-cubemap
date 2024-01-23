@@ -2,10 +2,10 @@ import { useThree } from '@react-three/fiber'
 import { useState } from 'react'
 import { a } from '@react-spring/three'
 import { FrontSide } from 'three'
-import { useOutputPlaneSpringAnimation } from '../hooks/useOutputPlaneSpringAnimation'
-import { SizeLabel } from './SizeLabel'
-import { useSettingControls } from '../hooks/useSettingControls'
-import { useLabelsControls } from '../hooks/useLabelsControls'
+import { useOutputPlaneSpringAnimation } from '../hooks/use-output-plane-spring-animation'
+import { SizeLabel } from './size-label'
+import { useSettingControls } from '../hooks/use-setting-controls'
+import { useLabelsControls } from '../hooks/use-labels-controls'
 
 type TextureResult3DDisplayProps = {
 	renderTargetList: THREE.WebGLRenderTarget[]
