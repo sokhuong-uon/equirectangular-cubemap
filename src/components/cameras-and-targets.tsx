@@ -2,7 +2,12 @@ import { useTexture } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import { MutableRefObject, Suspense } from 'react'
 import { StatefulAxesHelper } from './stateful-axes-helper'
-import { BackSide, EquirectangularRefractionMapping, PerspectiveCamera, sRGBEncoding } from 'three'
+import {
+	BackSide,
+	EquirectangularRefractionMapping,
+	PerspectiveCamera,
+	SRGBColorSpace,
+} from 'three'
 import { CubicCameras } from './cubic-cameras'
 import { TextureResult3DDisplay } from './texture-result-3d-display'
 
@@ -23,7 +28,7 @@ const CamerasAndTargets = ({
 
 	const equirectangularTexture = useTexture(equirectangularImageURL)
 	equirectangularTexture.mapping = EquirectangularRefractionMapping
-	equirectangularTexture.encoding = sRGBEncoding
+	equirectangularTexture.colorSpace = SRGBColorSpace
 	equirectangularTexture.anisotropy = gl.capabilities.getMaxAnisotropy()
 	equirectangularTexture.generateMipmaps = true
 
@@ -43,7 +48,7 @@ const CamerasAndTargets = ({
 		<>
 			<StatefulAxesHelper />
 			<mesh scale={[1, 1, -1]}>
-				<sphereBufferGeometry args={[10]}></sphereBufferGeometry>
+				<sphereGeometry args={[10]}></sphereGeometry>
 				<meshBasicMaterial side={BackSide} map={equirectangularTexture}></meshBasicMaterial>
 			</mesh>
 

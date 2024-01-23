@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { a } from '@react-spring/three'
 import { FrontSide } from 'three'
 import { useOutputPlaneSpringAnimation } from '../hooks/use-output-plane-spring-animation'
-import { SizeLabel } from './size-label'
+import { SideLabel } from './side-label'
 import { useSettingControls } from '../hooks/use-setting-controls'
 import { useLabelsControls } from '../hooks/use-labels-controls'
 
@@ -42,14 +42,15 @@ const TextureResult3DDisplay = ({ renderTargetList }: TextureResult3DDisplayProp
 					scale={springList[index].scale}
 					onClick={onDownload}
 				>
-					<planeBufferGeometry />
+					<planeGeometry />
 					<meshBasicMaterial side={FrontSide} map={target.texture}></meshBasicMaterial>
-					<SizeLabel
+					<SideLabel
 						visible={show}
 						color={color}
 						label={labels[index]}
 						localPosition={[0, 0, 0.01]}
-					></SizeLabel>
+						scale={0.2}
+					></SideLabel>
 				</a.mesh>
 			))}
 		</>
