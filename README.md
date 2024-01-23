@@ -49,6 +49,9 @@ Adjust the view and functionality.
    pnpm dev
    ```
 
+## Roadmap
+- Handle HDR image with RGBELoader
+
 ## Acknowledgement
 ### Image source
  - [christmas_photo_studio_04](https://polyhaven.com/a/christmas_photo_studio_04) by [Sergej Majboroda](https://hdrmarket.com/)
