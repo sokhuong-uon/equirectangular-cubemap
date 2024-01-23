@@ -1,7 +1,7 @@
 # Equirectangular to Cubemap
 Take an Equirectangular or 360 Panorama image as input and return Cubemap images (6 images with a 1:1 aspect ratio).
 
-## Introduction
+## Usage
 Visit https://equirectangular-cubemap.vercel.app/ and you will be welcomed with the UI like the following image.
 
 The main view is a 3D scene where you can see:
@@ -31,7 +31,24 @@ Adjust the view and functionality.
 
    <img src="https://github.com/sokhuong-uon/equirectangular-cubemap/assets/77433349/5fa6bb10-6411-4f39-9489-82a26aaa1760" width="300"/>
    
+## Local Development
+**Note**: Make sure you have **Node.js** installed on your machine.
 
+1. Clone the repo.
+2. Change directory to _equirectangular-cubemap_.
+   ```bash
+   cd equirectangular-cubemap
+   ```
+3. Install dependencies:
+   ```bash
+   pnpm i # you can use `yarn` or `npm install` or `bun install`
+   ```
+   if you want to use `pnpm` but haven't enabled it yet, you can run `corepack enable` to enable yarn and pnpm.
+4. Run local server
+   ```bash
+   pnpm dev
+   ```
 
-## Image source
+## Acknowledgement
+### Image source
  - [christmas_photo_studio_04](https://polyhaven.com/a/christmas_photo_studio_04) by [Sergej Majboroda](https://hdrmarket.com/)
