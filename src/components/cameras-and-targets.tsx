@@ -1,10 +1,10 @@
 import { useTexture } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import { MutableRefObject, Suspense } from 'react'
-import { StatefulAxesHelper } from './StatefulAxesHelper'
+import { StatefulAxesHelper } from './stateful-axes-helper'
 import { BackSide, EquirectangularRefractionMapping, PerspectiveCamera, sRGBEncoding } from 'three'
-import { CubicCameras } from './CubicCameras'
-import { TextureResult3DDisplay } from './TextureResult3DDisplay'
+import { CubicCameras } from './cubic-cameras'
+import { TextureResult3DDisplay } from './texture-result-3d-display'
 
 type CamerasAndTargetsProps = {
 	equirectangularImageURL: string

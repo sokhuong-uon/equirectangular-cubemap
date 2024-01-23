@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { StandardSinglePathSVG } from './StandardSinglePathSVG'
+import { StandardSinglePathSVG } from './standard-single-path-svg'
 
 type EquirectangularCardProps = {
 	url: string

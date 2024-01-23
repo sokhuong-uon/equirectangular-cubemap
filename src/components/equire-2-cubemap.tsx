@@ -1,14 +1,14 @@
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
-import { CamerasAndTargets } from './CamerasAndTargets'
-import { useCubeCamera } from '../hooks/useCubeCamera'
-import { useCubeRenderTarget } from '../hooks/useCubeRenderTarget'
+import { CamerasAndTargets } from './cameras-and-targets'
+import { useCubeCamera } from '../hooks/use-cube-camera'
+import { useCubeRenderTarget } from '../hooks/use-cube-render-target'
 import { Scene, sRGBEncoding, WebGLRenderer } from 'three'
-import { EquirectangularList } from './EquirectangularList'
-import { useSettingControls } from '../hooks/useSettingControls'
-import { useSidePresetControls, DownloadFormat } from '../hooks/useSidePresetControls'
-import { StandardSinglePathSVG } from './StandardSinglePathSVG'
+import { EquirectangularList } from './equirectangular-list'
+import { useSettingControls } from '../hooks/use-setting-controls'
+import { useSidePresetControls, DownloadFormat } from '../hooks/use-side-preset-controls'
+import { StandardSinglePathSVG } from './standard-single-path-svg'
 
 const Equire2Cubemap = () => {
 	const [equirectangularImageURL, setEquirectangularImageURL] = useState(

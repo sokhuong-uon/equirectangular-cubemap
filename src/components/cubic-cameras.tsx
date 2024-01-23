@@ -1,6 +1,6 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react'
 import { PerspectiveCamera } from '@react-three/drei'
-import { useSettingControls } from '../hooks/useSettingControls'
+import { useSettingControls } from '../hooks/use-setting-controls'
 
 type CubicCamerasProps = {
 	cameraList: MutableRefObject<THREE.PerspectiveCamera>[]
